@@ -1,12 +1,13 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://json.schemastore.org/buf.json",
-  "$comment": "https://buf.build/docs/configuration/v1/buf-yaml",
+  "$comment": "https://buf.build/docs/configuration/v2/buf-yaml",
   "$defs": {
     "lint-rule": {
       "type": "string",
       "description": "https://buf.build/docs/lint/rules",
       "enum": [
+        "STANDARD",
         "DEFAULT",
         "BASIC",
         "MINIMAL",
@@ -55,7 +56,9 @@
         "COMMENT_SERVICE",
         "RPC_NO_CLIENT_STREAMING",
         "RPC_NO_SERVER_STREAMING",
-        "PACKAGE_NO_IMPORT_CYCLE"
+        "PACKAGE_NO_IMPORT_CYCLE",
+        "SYNTAX_SPECIFIED",
+        "STABLE_PACKAGE_NO_IMPORT_UNSTABLE"
       ]
     },
     "breaking-rule": {
@@ -119,6 +122,7 @@
         "MESSAGE_NO_REMOVE_STANDARD_DESCRIPTOR_ACCESSOR",
         "MESSAGE_SAME_JSON_FORMAT",
         "MESSAGE_SAME_MESSAGE_SET_WIRE_FORMAT",
+        "MESSAGE_SAME_REQUIRED_FIELDS",
         "ONEOF_NO_DELETE",
         "PACKAGE_ENUM_NO_DELETE",
         "PACKAGE_EXTENSION_NO_DELETE",
@@ -142,6 +146,12 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "STANDARD": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "DEFAULT": {
           "type": "array",
           "items": {
@@ -431,6 +441,18 @@
           }
         },
         "PACKAGE_NO_IMPORT_CYCLE": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "SYNTAX_SPECIFIED": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "STABLE_PACKAGE_NO_IMPORT_UNSTABLE": {
           "type": "array",
           "items": {
             "type": "string"
@@ -786,6 +808,12 @@
             "type": "string"
           }
         },
+        "MESSAGE_SAME_REQUIRED_FIELDS": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "ONEOF_NO_DELETE": {
           "type": "array",
           "items": {
@@ -886,7 +914,7 @@
       "properties": {
         "use": {
           "$comment": "https://buf.build/docs/configuration/v2/buf-yaml#use",
-          "description": "Optional. Lists the categories and/or specific rules to use. The DEFAULT category is used if lint is unset.",
+          "description": "Optional. Lists the categories and/or specific rules to use. The STANDARD category is used if lint is unset.",
           "type": "array",
           "items": {
             "$ref": "#/$defs/lint-rule"
@@ -1024,6 +1052,13 @@
         "description": "The build key is optional, and is used to control how buf builds modules.",
         "type": "object",
         "properties": {
+          "includes": {
+            "description": "Optional. Lists directories within this directory to include in Protobuf file discovery. Only directories added to this list are included in Buf operations.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "excludes": {
             "description": "The excludes key is optional, and lists directories to ignore from .proto file discovery. Any directories added to this list are completely skipped and excluded in the module. We do not recommend using this option in general, however in some situations it is unavoidable.",
             "type": "array",

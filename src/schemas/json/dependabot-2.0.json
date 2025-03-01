@@ -4,7 +4,6 @@
   "additionalProperties": false,
   "definitions": {
     "timezone": {
-      "$id": "timezone",
       "type": "string",
       "enum": [
         "Africa/Abidjan",
@@ -648,11 +647,13 @@
     },
     "package-ecosystem-values": {
       "enum": [
+        "bun",
         "bundler",
         "cargo",
         "composer",
         "devcontainers",
         "docker",
+        "dotnet-sdk",
         "elm",
         "gitsubmodule",
         "github-actions",
@@ -663,7 +664,6 @@
         "npm",
         "nuget",
         "pip",
-        "pip-compile",
         "pub",
         "swift",
         "terraform"
@@ -811,6 +811,7 @@
             "anyOf": [
               { "required": ["dependency-type"] },
               { "required": ["patterns"] },
+              { "required": ["exclude-patterns"] },
               { "required": ["update-types"] }
             ],
             "additionalProperties": false
